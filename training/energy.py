@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from code import config
+from svit import config
 
 from torch.utils.data import DataLoader
 

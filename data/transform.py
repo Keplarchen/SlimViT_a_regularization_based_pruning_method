@@ -1,4 +1,4 @@
-from code import config
+from svit import config
 from torchvision import transforms
 
 mean = {

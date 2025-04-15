@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from code import config, device
+from svit import config, device
 from energy import energy_function
 
 from torch.utils.data import DataLoader

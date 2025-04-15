@@ -1,4 +1,4 @@
-from code import config
+from svit import config
 from transform import CIFAR_transform
 from torchvision.datasets import CIFAR10, CIFAR100
 from torch.utils.data import random_split, Dataset

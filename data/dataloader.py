@@ -1,4 +1,4 @@
-from code import config
+from svit import config
 from dataset import cifar_dataset
 from torch.utils.data import DataLoader
 

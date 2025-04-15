@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from code import config
+from svit import config
 
 class PatchScaler(nn.Module):
     def __init__(self, patch_size: int,
