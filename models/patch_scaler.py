@@ -1,11 +1,13 @@
 import torch
 import torch.nn as nn
 
+from code import config
+
 class PatchScaler(nn.Module):
     def __init__(self, patch_size: int,
-                 init_scale: float=1.0,
-                 init_threshold: float=0.1,
-                 hard: bool=False) -> None:
+                 init_scale: float=config["models"]["init_scale"],
+                 init_threshold: float=config["models"]["init_threshold"],
+                 hard: bool=config["models"]["hard_prune"]) -> None:
         """
 
         :param patch_size:

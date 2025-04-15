@@ -1,8 +1,10 @@
 import torch
 import torch.nn as nn
 
+from code import config
 from patch_scaler import PatchScaler
 from heads import SlimViTHead
+from torchvision.models import vit_b_16
 
 head_num = {
     "cifar10": 10,
@@ -10,17 +12,15 @@ head_num = {
 }
 
 class SlimViT(nn.Module):
-    def __init__(self, dataset: str,
-                 base_model: nn.Module,
-                 fine_tune: bool=True) -> None:
+    def __init__(self, dataset: str=config["data"]["train_dataset"],
+                 fine_tune: bool=config["models"]["fine_tune"]) -> None:
         """
 
         :param dataset:
-        :param base_model:
         :param fine_tune:
         """
         super().__init__()
-        self.vit = base_model(weights="DEFAULT" if fine_tune else None)
+        self.vit = vit_b_16(weights="DEFAULT" if fine_tune else None)
         self.scaler = PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1)
         self.head = SlimViTHead(out_features=head_num[dataset])
 
@@ -42,4 +42,3 @@ class SlimViT(nn.Module):
         x = x[:, 0, :]
         x = self.head(x)
         return x
-
