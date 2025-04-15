@@ -8,7 +8,8 @@ models:
   fine_tune: True
   init_scale: 1.0
   init_threshold: 1.0
-  hard_prune: False
+  hard_prune: True
+  multi_prune: True
 
 training:
   batch_size: 32

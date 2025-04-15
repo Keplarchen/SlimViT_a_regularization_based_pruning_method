@@ -31,8 +31,15 @@ class PatchScaler(nn.Module):
         """
         cls = x[:, :1, :]
         patch = x[:, 1:, :]
-        if not self.hard:
+        if self.hard:
+            with torch.no_grad():
+                hard_mask = (self.scaler > self.threshold).float()
+            soft_mask = torch.sigmoid(self.scaler - self.threshold)
+            gate = hard_mask + soft_mask - soft_mask.detach()
+        else:
             gate = torch.sigmoid(self.scaler - self.threshold)
+            if not self.training:
+                gate = (gate > self.threshold).float()
         scaled_patch = patch * gate.view(1, -1, 1)
         pos_emb = torch.cat([cls, scaled_patch], dim=1)
         return pos_emb
