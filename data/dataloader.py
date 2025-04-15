@@ -1,0 +1,28 @@
+from dataset import *
+from torch.utils.data import DataLoader
+
+def target_set_dataloader(dataset: str,
+                          root: str="cifar100",
+                          download: bool=True,
+                          val_dataset: bool=False,
+                          val_ratio: float=0.75,
+                          batch_size: int=32,
+                          train_shuffle: bool=True,
+                          val_shuffle: bool=False) -> tuple[DataLoader, DataLoader, DataLoader]:
+    """
+
+    :param dataset:
+    :param root:
+    :param download:
+    :param val_dataset:
+    :param val_ratio:
+    :param batch_size:
+    :param train_shuffle:
+    :param val_shuffle:
+    :return:
+    """
+    train_dataset, val_dataset, test_dataset = cifar_dataset(dataset, root, download, val_dataset, val_ratio)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=train_shuffle)
+    val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=val_shuffle)
+    test_dataloader = DataLoader(test_dataset, batch_size=len(test_dataset), shuffle=False)
+    return train_dataloader, val_dataloader, test_dataloader
