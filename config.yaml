@@ -1,0 +1,10 @@
+data:
+  train_dataset: cifar100
+  resize_size: 224
+  val_dataset: True
+  val_ratio: 0.75
+
+train:
+  batch_size: 32
+  epoch: 50
+

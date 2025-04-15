@@ -1,3 +1,4 @@
+from code import config
 from torchvision import transforms
 
 mean = {
@@ -10,26 +11,16 @@ std = {
     'cifar100': (0.2675, 0.2565, 0.2761),
 }
 
-def CIFAR10_transform(target_size: int=224) -> transforms.Compose:
+def CIFAR_transform(target_dataset: str=config["data"]["train_dataset"],
+                    resize_size: int=config["data"]["resize_size"]) -> transforms.Compose:
     """
 
-    :param target_size:
+    :param target_dataset:
+    :param resize_size:
     :return:
     """
     return transforms.Compose([
-        transforms.Resize([target_size, target_size]),
+        transforms.Resize([resize_size, resize_size]),
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean['cifar10'], std=std['cifar10']),
-    ])
-
-def CIFAR100_transform(target_size: int=224) -> transforms.Compose:
-    """
-
-    :param target_size:
-    :return:
-    """
-    return transforms.Compose([
-        transforms.Resize([target_size, target_size]),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=mean['cifar100'], std=std['cifar100']),
+        transforms.Normalize(mean=mean[target_dataset], std=std[target_dataset]),
     ])
