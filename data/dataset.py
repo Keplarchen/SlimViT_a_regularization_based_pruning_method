@@ -2,7 +2,6 @@ from transform import *
 from torchvision.datasets import CIFAR10, CIFAR100
 from torch.utils.data import random_split, Dataset
 
-
 def dataset_split(full_dataset: Dataset,
                   val_ratio: float=0.75) -> tuple[Dataset, Dataset]:
     """

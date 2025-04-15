@@ -1,14 +1,14 @@
 from dataset import *
 from torch.utils.data import DataLoader
 
-def target_set_dataloader(dataset: str,
-                          root: str="cifar100",
-                          download: bool=True,
-                          val_dataset: bool=False,
-                          val_ratio: float=0.75,
-                          batch_size: int=32,
-                          train_shuffle: bool=True,
-                          val_shuffle: bool=False) -> tuple[DataLoader, DataLoader, DataLoader]:
+def cifar_dataloader(dataset: str,
+                     root: str="cifar100",
+                     download: bool=True,
+                     val_dataset: bool=False,
+                     val_ratio: float=0.75,
+                     batch_size: int=32,
+                     train_shuffle: bool=True,
+                     val_shuffle: bool=False) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
 
     :param dataset:
