@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="93eb0302-6a1e-4e41-acd4-fe55fb8440cd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/svit_code.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/svit/utils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/svit/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/transform.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/heads.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/heads.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/patch_scaler.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/patch_scaler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/slim_ViT.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/slim_ViT.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/energy.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/training/energy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training/training_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/training/training_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/training/__init__.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2vmFsanTnDw5rcBeueHKjVwGERk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.26053.29" />
+        <option value="bundled-python-sdk-b1dbf8ef85a6-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.26053.29" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="93eb0302-6a1e-4e41-acd4-fe55fb8440cd" name="Changes" comment="" />
+      <created>1744742549542</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1744742549542</updated>
+      <workItem from="1744742550545" duration="913000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

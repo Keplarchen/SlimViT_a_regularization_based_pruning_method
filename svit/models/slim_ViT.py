@@ -2,8 +2,9 @@ import torch
 import torch.nn as nn
 
 from svit import config
-from patch_scaler import PatchScaler
-from heads import SlimViTHead
+from svit.models.patch_scaler import PatchScaler
+from svit.models.heads import SlimViTHead
+
 from torchvision.models import vit_b_16
 
 head_num = {

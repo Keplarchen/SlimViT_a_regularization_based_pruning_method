@@ -15,7 +15,7 @@ training:
   batch_size: 32
   epoch: 50
   learning_rate: 0.01
-  weight_decay: 1e-6
+  weight_decay: 0.09
   T_max: 100
 
 energy:

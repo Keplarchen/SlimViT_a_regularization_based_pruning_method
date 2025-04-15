@@ -1,5 +1,6 @@
 from svit import config
-from dataset import cifar_dataset
+from svit.data.dataset import cifar_dataset
+
 from torch.utils.data import DataLoader
 
 def cifar_dataloader(dataset: str=config["data"]["train_dataset"],

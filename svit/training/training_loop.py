@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from svit import config, device
-from energy import energy_function
+from svit.training.energy import energy_function
 
 from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import CosineAnnealingLR
@@ -55,7 +55,7 @@ def train(model:nn.Module,
     optimizer = get_optimizer(model)
     scheduler = get_scheduler(optimizer)
 
-    device.to(device)
+    model.to(device)
     criterion.to(device)
 
     pbar = tqdm(range(epoch))
