@@ -4,7 +4,12 @@ data:
   val_dataset: True
   val_ratio: 0.75
 
-train:
+models:
+  fine_tune: True
+  init_scale: 1.0
+  init_threshold: 1.0
+  hard_prune: False
+
+training:
   batch_size: 32
   epoch: 50
-

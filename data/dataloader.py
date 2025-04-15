@@ -7,7 +7,7 @@ def cifar_dataloader(dataset: str=config["data"]["train_dataset"],
                      download: bool=True,
                      val_dataset: bool=config["data"]["val_dataset"],
                      val_ratio: float=config["data"]["val_ratio"],
-                     batch_size: int=config["train"]["batch_size"],
+                     batch_size: int=config["training"]["batch_size"],
                      train_shuffle: bool=True,
                      val_shuffle: bool=False) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
