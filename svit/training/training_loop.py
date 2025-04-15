@@ -60,7 +60,15 @@ def train(model:nn.Module,
 
     pbar = tqdm(range(epoch))
 
+    F_list = []
+    cost_list = []
+    l1_list = []
+    accuracy_list = []
     for epoch in pbar:
+        F_list_e = []
+        cost_list_e = []
+        l1_list_e = []
+        accuracy_list_e = []
         for data in tqdm(train_dataloader, leave=False):
             gc.collect()
             if device == "cuda":
@@ -70,9 +78,21 @@ def train(model:nn.Module,
             x, y = x.to(device), y.to(device)
 
             output = model(x)
-            F, cost, l1, s, a = energy_function(model, output, y, val_dataloader, criterion)
+            F, cost, l1, a = energy_function(model, output, y, val_dataloader, criterion)
 
             optimizer.zero_grad()
             F.backward()
             optimizer.step()
             scheduler.step()
+
+        average_F = sum(F_list_e) / len(F_list_e)
+        average_cost = sum(cost_list_e) / len(cost_list_e)
+        average_l1 = sum(l1_list_e) / len(l1_list_e)
+        average_accuracy = sum(accuracy_list_e) / len(accuracy_list_e)
+
+        F_list.append(average_F)
+        cost_list.append(average_cost)
+        l1_list.append(average_l1)
+        accuracy_list.append(average_accuracy)
+
+        pbar.postfix({"energy: ": average_F, "cost: ": average_cost, "l1: ": average_l1, "accuracy: ": average_accuracy})

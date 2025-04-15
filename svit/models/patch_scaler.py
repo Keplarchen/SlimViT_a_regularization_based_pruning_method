@@ -6,22 +6,19 @@ from svit import config
 class PatchScaler(nn.Module):
     def __init__(self, patch_size: int,
                  init_scale: float=config["models"]["init_scale"],
-                 init_threshold: float=config["models"]["init_threshold"],
-                 hard: bool=config["models"]["hard_prune"]) -> None:
+                 init_scale_threshold: float=config["models"]["init_scale_threshold"],
+                 init_sparsity_threshold: float=config["models"]["init_sparsity_threshold"]) -> None:
         """
 
         :param patch_size:
         :param init_scale:
-        :param init_threshold:
-        :param hard:
+        :param init_scale_threshold:
+        :param init_sparsity_threshold:
         """
         super().__init__()
-        self.patch_size = patch_size
-        self.init_scale = init_scale
-        self.init_threshold = init_threshold
-        self.hard = hard
-        self.scaler = nn.Parameter(torch.full((self.patch_size,), self.init_scale))
-        self.threshold = nn.Parameter(torch.tensor(self.init_threshold))
+        self.scaler = nn.Parameter(torch.full((patch_size,), init_scale))
+        self.scale_threshold = nn.Parameter(torch.tensor(init_scale_threshold))
+        self.sparsity_threshold = nn.Parameter(torch.tensor(init_sparsity_threshold))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -31,15 +28,22 @@ class PatchScaler(nn.Module):
         """
         cls = x[:, :1, :]
         patch = x[:, 1:, :]
-        if self.hard:
-            with torch.no_grad():
-                hard_mask = (self.scaler > self.threshold).float()
-            soft_mask = torch.sigmoid(self.scaler - self.threshold)
-            gate = hard_mask + soft_mask - soft_mask.detach()
-        else:
-            gate = torch.sigmoid(self.scaler - self.threshold)
-            if not self.training:
-                gate = (gate > self.threshold).float()
-        scaled_patch = patch * gate.view(1, -1, 1)
-        pos_emb = torch.cat([cls, scaled_patch], dim=1)
+        scaled_patch = patch * self.scaler.view(1, -1, 1)
+
+        with torch.no_grad():
+            scale_hard_mask = scaled_patch > self.scale_threshold
+        scale_soft_mask = torch.sigmoid(scaled_patch - self.scale_threshold)
+        scale_gate = scale_hard_mask + scale_soft_mask - scale_soft_mask.detach()
+        scale_gated_patch = scaled_patch * scale_gate
+
+        with torch.no_grad():
+            patch_sparsity = torch.sum((scale_gated_patch < self.sparsity_threshold).float(), dim=-1, keepdim=True)/patch.shape[-1]
+            sparsity_hard_mask = patch_sparsity > self.sparsity_threshold
+        # TODO: change soft sparsity gate
+        sparsity_gate = sparsity_hard_mask + scale_gated_patch - scale_gated_patch.detach()
+
+        # TODO: patch padding
+
+
+        pos_emb = torch.cat([cls, gated_patch], dim=1)
         return pos_emb

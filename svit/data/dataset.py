@@ -16,6 +16,7 @@ def dataset_split(full_dataset: Dataset,
     val_size = len(full_dataset) - train_size
 
     train_dataset, val_dataset = random_split(full_dataset, [train_size, val_size])
+    print(len(train_dataset), len(val_dataset))
     return train_dataset, val_dataset
 
 def cifar_dataset(target_dataset: str=config["data"]["train_dataset"],

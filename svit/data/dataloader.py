@@ -19,6 +19,7 @@ def cifar_dataloader(dataset: str=config["data"]["train_dataset"],
     :param val_dataset:
     :param val_ratio:
     :param batch_size:
+    :param val_batch_size:
     :param train_shuffle:
     :param val_shuffle:
     :return:
