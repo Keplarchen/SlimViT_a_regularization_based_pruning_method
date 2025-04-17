@@ -3,7 +3,8 @@ from svit.data.transform import CIFAR_transform
 from torchvision.datasets import CIFAR10, CIFAR100
 from torch.utils.data import random_split, Dataset
 
-def dataset_split(full_dataset: Dataset, train_ratio: float) -> tuple[Dataset, Dataset]:
+def dataset_split(full_dataset: Dataset,
+                  train_ratio: float) -> tuple[Dataset, Dataset]:
     """
     Splits a given dataset into training and validation sets based on the specified
     training ratio. The size of the training set is determined by multiplying the
@@ -25,7 +26,11 @@ def dataset_split(full_dataset: Dataset, train_ratio: float) -> tuple[Dataset, D
     print(len(train_dataset), len(val_dataset))
     return train_dataset, val_dataset
 
-def cifar_dataset(target_dataset: str, root: str, download: bool, val_dataset: bool, train_ratio: float,
+def cifar_dataset(target_dataset: str,
+                  root: str,
+                  download: bool,
+                  val_dataset: bool,
+                  train_ratio: float,
                   resize_size: int) -> tuple[Dataset, Dataset, Dataset]:
     """
     Prepare CIFAR dataset based on the specified parameters. Handles CIFAR-10

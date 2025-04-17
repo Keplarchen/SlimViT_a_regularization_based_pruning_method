@@ -2,24 +2,25 @@ data:
   train_dataset: cifar100
   resize_size: 224
   val_dataset: True
-  val_ratio: 0.99
+  train_ratio: 0.98
 
 models:
   fine_tune: True
   init_scale: 1.0
-  init_scale_threshold: 0.5
-  init_sparsity_threshold: 0.5
+  init_scale_threshold: 0.01
+  init_sparsity_threshold: 0.8
   multi_prune: True
   granularity: embedding
 
 training:
-  batch_size: 64
-  epoch: 20
-  learning_rate: 0.01
-  weight_decay: 0.09
+  batch_size: 128
+  epoch: 10
+  learning_rate: 0.0005
+  weight_decay: 0.01
   T_max: 100
 
 energy:
-  lambda_l1: 1.0
-  lambda_accuracy: 0.7
+  accuracy_tradeoff: False
+  lambda_l1: 0.00001
+  lambda_accuracy: -0.7
   target_accuracy: 0.9

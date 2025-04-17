@@ -11,12 +11,22 @@ class PatchScaler(nn.Module):
                  init_sparsity_threshold: float=config["models"]["init_sparsity_threshold"],
                  granularity: str=config["models"]["granularity"]) -> None:
         """
+        Initializes a model component with parameters for scaling and sparsity threshold
+        based on specified granularity. The initialization supports per-patch and
+        per-embedding configurations, constructing appropriate scaling parameters for
+        the given granularity.
 
-        :param patch_size:
-        :param init_scale:
-        :param init_scale_threshold:
-        :param init_sparsity_threshold:
-        :param granularity:
+        :param patch_size: The size of each patch for which the scaling or embedding
+                           parameters are applied.
+        :param patch_dim: The dimensionality of individual patches, relevant for the
+                          "embedding" granularity.
+        :param init_scale: Initial scaling factor applied to the patches or embeddings.
+        :param init_scale_threshold: Threshold for managing the scale values.
+        :param init_sparsity_threshold: Threshold for managing sparsity values.
+        :param granularity: Specifies the granularity mode, which can be either "patch"
+                            or "embedding".
+
+        :raises ValueError: If the provided granularity is not recognized.
         """
         super().__init__()
         self.granularity = granularity
@@ -31,9 +41,22 @@ class PatchScaler(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
+        Processes an input tensor by applying scaling and sparsity gating mechanisms
+        based on predefined thresholds and granularity settings.
 
-        :param x:
-        :return:
+        The forward method splits the input tensor into class (cls) and patch components,
+        applies scaling to the patch segment depending on a granularity setting, and
+        performs gated sparsity and scaling adjustments. These adjustments are used
+        to restrict and modify the patch values according to specified thresholds
+        and conditions.
+
+        :param x: Input tensor with the first dimension representing batch size,
+                  second dimension (split into class and patch components), and
+                  third dimension representing feature dimensions.
+        :type x: torch.Tensor
+        :return: Tensor combining the class segment and sparsity-gated patch segment
+                 after processing.
+        :rtype: torch.Tensor
         """
         cls = x[:, :1, :]
         patch = x[:, 1:, :]

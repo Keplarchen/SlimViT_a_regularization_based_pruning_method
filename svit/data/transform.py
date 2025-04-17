@@ -10,7 +10,8 @@ std = {
     'cifar100': (0.2675, 0.2565, 0.2761),
 }
 
-def CIFAR_transform(target_dataset: str, resize_size: int) -> transforms.Compose:
+def CIFAR_transform(target_dataset: str,
+                    resize_size: int) -> transforms.Compose:
     """
     Constructs a transformation pipeline for preprocessing the CIFAR dataset. The transformations
     include resizing the image, converting it to a tensor, and normalizing it using dataset-specific

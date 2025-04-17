@@ -17,15 +17,27 @@ class SlimViT(nn.Module):
                  fine_tune: bool=config["models"]["fine_tune"],
                  multi_prune: bool=config["models"]["multi_prune"]) -> None:
         """
+        Initializes the model with specified options for fine-tuning, multi-step pruning,
+        and dataset-specific configuration. The class leverages a Vision Transformer (ViT)
+        model as the backbone and optionally applies multi-step pruning via `PatchScaler`.
 
-        :param dataset:
-        :param fine_tune:
-        :param multi_prune:
+        The class dynamically adapts to the input dataset and configures model components
+        accordingly, including the positional embedding, layer structure, and pruning logic.
+
+        Options for fine-tuning and multi-step pruning are provided for flexibility in model
+        training and optimization.
+
+        :param dataset: The name of the dataset used for training or evaluation.
+        :type dataset: str
+        :param fine_tune: Indicates if the Vision Transformer backbone should be fine-tuned.
+        :type fine_tune: bool
+        :param multi_prune: Flag for enabling multi-step pruning of patches using `PatchScaler`.
+        :type multi_prune: bool
         """
         super().__init__()
         self.multi_prune = multi_prune
         self.vit = vit_b_16(weights="DEFAULT" if fine_tune else None)
-        self.head = SlimViTHead(out_features=head_num[dataset])
+        self.head = SlimViTHead(in_features=self.vit.encoder.pos_embedding.shape[-1], out_features=head_num[dataset])
         if self.multi_prune:
             self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
                                                      patch_dim=self.vit.encoder.pos_embedding.shape[2])
@@ -36,9 +48,19 @@ class SlimViT(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
+        Processes an input tensor through a vision transformer-based model with added
+        functionality for multi-layer or single-layer scaling and returns the output
+        tensor. The process includes input transformation, token addition, positional
+        embedding application, layer-specific transformations, and final classification
+        adjustments.
 
-        :param x:
-        :return:
+        :param x: Input tensor expected to be in a format suitable for processing
+            through the Vision Transformer (ViT) model.
+        :type x: torch.Tensor
+
+        :return: Output tensor after being processed through the model, particularly
+            suitable for classification or other prediction tasks.
+        :rtype: torch.Tensor
         """
         x = self.vit._process_input(x)
 

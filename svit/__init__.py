@@ -7,4 +7,4 @@ with open(os.path.join(os.path.dirname(__file__), "config.yaml"), "r") as f:
 
 device = 'cpu'
 if torch.cuda.is_available():
-  device = 'cuda'
+    device = 'cuda'
