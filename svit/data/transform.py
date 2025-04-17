@@ -1,5 +1,3 @@
-from svit import config
-
 from torchvision import transforms
 
 mean = {
@@ -12,13 +10,21 @@ std = {
     'cifar100': (0.2675, 0.2565, 0.2761),
 }
 
-def CIFAR_transform(target_dataset: str=config["data"]["train_dataset"],
-                    resize_size: int=config["data"]["resize_size"]) -> transforms.Compose:
+def CIFAR_transform(target_dataset: str, resize_size: int) -> transforms.Compose:
     """
+    Constructs a transformation pipeline for preprocessing the CIFAR dataset. The transformations
+    include resizing the image, converting it to a tensor, and normalizing it using dataset-specific
+    mean and standard deviation values.
 
-    :param target_dataset:
-    :param resize_size:
-    :return:
+    :param target_dataset: The name of the target dataset (e.g., 'cifar10', 'cifar100') for
+        selecting the corresponding mean and standard deviation values used in normalization.
+    :type target_dataset: str
+    :param resize_size: The size to which the images will be resized. The image dimensions will be
+        square, resized to [resize_size, resize_size].
+    :type resize_size: int
+    :return: A ``transforms.Compose`` object containing the series of transformations to apply
+        to the dataset, including resizing, tensor conversion, and normalization.
+    :rtype: transforms.Compose
     """
     return transforms.Compose([
         transforms.Resize([resize_size, resize_size]),
