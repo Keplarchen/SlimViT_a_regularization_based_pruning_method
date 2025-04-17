@@ -67,26 +67,27 @@ def get_scheduler(optimizer: optim.Optimizer,
 def train(model:nn.Module,
           train_dataloader: DataLoader,
           val_dataloader: DataLoader,
-          epoch: int=config["training"]["epoch"]) -> None:
+          epoch: int=config["training"]["epoch"],
+          accuracy_tradeoff: bool=config["energy"]["accuracy_tradeoff"]) -> None:
     """
-    Trains a neural network model using the provided data loaders for a specified
-    number of epochs. The function utilizes a criterion for loss calculation, an
-    optimizer for parameter updates, and a scheduler for learning rate adjustments.
-    It also tracks various metrics, including energy, cost, L1 norm, and accuracy,
-    and logs the progress for each epoch.
+    Trains a neural network model using a specified dataset, loss function, and optimizer.
+    This function iterates through a number of epochs, performs forward and backward passes,
+    and updates the model weights. Additionally, it computes relevant metrics such as energy,
+    cost, l1 regularization, and accuracy during each training step. These metrics are averaged
+    for each epoch and used to evaluate model performance and behavior.
 
     :param model: The neural network model to be trained.
     :type model: nn.Module
-    :param train_dataloader: DataLoader for training data, providing batches of input
-       features and corresponding labels.
+    :param train_dataloader: Dataloader containing the training dataset.
     :type train_dataloader: DataLoader
-    :param val_dataloader: DataLoader for validation data, which is used during the
-       calculation of energy and other metrics.
+    :param val_dataloader: Dataloader containing the validation dataset.
     :type val_dataloader: DataLoader
-    :param epoch: The number of epochs for which the model should be trained. Defaults
-       to the value fetched from the configuration dictionary.
+    :param epoch: Number of training epochs. Defaults to `config["training"]["epoch"]`.
     :type epoch: int
-    :return: Does not return a value. All computations and updates are performed in place.
+    :param accuracy_tradeoff: Whether to prioritize accuracy during training. Defaults to
+        `config["energy"]["accuracy_tradeoff"]`.
+    :type accuracy_tradeoff: bool
+    :return: This function does not return any value.
     :rtype: None
     """
     criterion = get_criterion()
@@ -118,6 +119,7 @@ def train(model:nn.Module,
             x, y = x.to(device), y.to(device)
 
             output = model(x)
+
             F, cost, l1, a = energy_function(model, output, y, val_dataloader, criterion)
 
             F_list_e.append(F)
@@ -130,7 +132,10 @@ def train(model:nn.Module,
             optimizer.step()
             scheduler.step()
 
-            inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1.item(), "accuracy: ": a})
+            if not model.is_base_model:
+                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1.item(), "accuracy: ": a})
+            else:
+                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1, "accuracy: ": a})
 
         average_F = sum(F_list_e) / len(F_list_e)
         average_cost = sum(cost_list_e) / len(cost_list_e)

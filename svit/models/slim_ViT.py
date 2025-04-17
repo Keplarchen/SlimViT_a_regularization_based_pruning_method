@@ -5,7 +5,7 @@ from svit import config
 from svit.models.patch_scaler import PatchScaler
 from svit.models.heads import SlimViTHead
 
-from torchvision.models import vit_b_16
+from torchvision.models import vit_b_16, ViT_B_16_Weights
 
 head_num = {
     "cifar10": 10,
@@ -15,7 +15,8 @@ head_num = {
 class SlimViT(nn.Module):
     def __init__(self, dataset: str=config["data"]["train_dataset"],
                  fine_tune: bool=config["models"]["fine_tune"],
-                 multi_prune: bool=config["models"]["multi_prune"]) -> None:
+                 multi_prune: bool=config["models"]["multi_prune"],
+                 is_base_model: bool=False) -> None:
         """
         Initializes the model with specified options for fine-tuning, multi-step pruning,
         and dataset-specific configuration. The class leverages a Vision Transformer (ViT)
@@ -35,16 +36,18 @@ class SlimViT(nn.Module):
         :type multi_prune: bool
         """
         super().__init__()
+        self.is_base_model = is_base_model
         self.multi_prune = multi_prune
-        self.vit = vit_b_16(weights="DEFAULT" if fine_tune else None)
+        self.vit = vit_b_16(weights=ViT_B_16_Weights.DEFAULT if fine_tune else None)
         self.head = SlimViTHead(in_features=self.vit.encoder.pos_embedding.shape[-1], out_features=head_num[dataset])
         if self.multi_prune:
             self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
-                                                     patch_dim=self.vit.encoder.pos_embedding.shape[2])
+                                                     patch_dim=self.vit.encoder.pos_embedding.shape[2],
+                                                     is_base_model=self.is_base_model)
                                         for _ in range(len(self.vit.encoder.layers))])
         else:
             self.scaler = PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
-                                      patch_dim=self.vit.encoder.pos_embedding.shape[2])
+                                      patch_dim=self.vit.encoder.pos_embedding.shape[2], is_base_model=is_base_model)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """

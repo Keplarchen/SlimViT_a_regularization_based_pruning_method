@@ -37,31 +37,29 @@ def energy_function(model: nn.Module,
              L1 regularization penalty, and the validation accuracy of the model.
     """
     cost = criterion(output, y)
+    scaler_l1 = 0.0
+    if not model.is_base_model:
+        if multi_prune:
+            scaler_l1 = sum(torch.norm(s.scaler, p=1) for s in model.scaler) * lambda_l1
+        else:
+            scaler_l1 = torch.norm(model.scaler.scaler, p=1) * lambda_l1
 
-    if multi_prune:
-        scaler_l1 = sum(torch.norm(s.scaler, p=1) for s in model.scaler) * lambda_l1
-    else:
-        scaler_l1 = torch.norm(model.scaler.scaler, p=1) * lambda_l1
-
-    # # TODO: sparsity
-    # sparsity = 0.0
-
-    accuracy = 0.0
+    total_correct = 0
+    total_samples = 0
+    model.eval()
+    with torch.no_grad():
+        for x_val, y_val in tqdm(val_dataloader, leave=False):
+            x_val = x_val.to(device)
+            y_val = y_val.to(device)
+            logits = model(x_val)
+            preds = torch.argmax(logits, dim=-1)
+            total_correct += (preds == y_val).sum().item()
+            total_samples += y_val.size(0)
+    model.train()
+    accuracy = total_correct / total_samples
     accuracy_penalty = 0.0
-    if accuracy_tradeoff:
-        model.eval()
-        accuracy_list = []
-        with torch.no_grad():
-            for data in tqdm(val_dataloader, leave=False):
-                x, y = data
-                x = x.to(device)
-                y = y.to(device)
-                output = model(x)
-                predict = torch.argmax(output, dim=-1)
-                accuracy_list.append((predict == y).sum().item() / y.shape[0])
-        model.train()
-        accuracy = sum(accuracy_list) / len(accuracy_list)
-        if accuracy < target_accuracy:
+    if not model.is_base_model:
+        if accuracy_tradeoff and accuracy < target_accuracy:
             accuracy_penalty = (accuracy / target_accuracy) ** lambda_accuracy
 
     F = cost + scaler_l1 + accuracy_penalty
