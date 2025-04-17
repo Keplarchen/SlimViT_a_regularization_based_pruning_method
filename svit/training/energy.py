@@ -31,9 +31,9 @@ def energy_function(model: nn.Module,
     cost = criterion(output, y)
 
     if multi_prune:
-        scaler_l1 = sum(torch.norm(s.scaler, p=1) for s in model.scaler) ** lambda_l1
+        scaler_l1 = sum(torch.norm(s.scaler, p=1) for s in model.scaler) * lambda_l1
     else:
-        scaler_l1 = torch.norm(model.scaler.scaler, p=1) ** lambda_l1
+        scaler_l1 = torch.norm(model.scaler.scaler, p=1) * lambda_l1
 
     # # TODO: sparsity
     # sparsity = 0.0
@@ -55,5 +55,5 @@ def energy_function(model: nn.Module,
     else:
         accuracy_penalty = (accuracy / target_accuracy) ** lambda_accuracy
 
-    F = cost + scaler_l1 + lambda_accuracy * accuracy_penalty
+    F = cost + scaler_l1 + accuracy_penalty
     return F, cost, scaler_l1, accuracy

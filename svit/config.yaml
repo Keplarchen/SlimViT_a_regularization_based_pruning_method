@@ -14,12 +14,12 @@ models:
 
 training:
   batch_size: 64
-  epoch: 10
+  epoch: 20
   learning_rate: 0.01
   weight_decay: 0.09
   T_max: 100
 
 energy:
-  lambda_l1: 1.5
-  lambda_accuracy: 0.3
+  lambda_l1: 1.0
+  lambda_accuracy: 0.7
   target_accuracy: 0.9

@@ -7,7 +7,6 @@
     <list default="true" id="93eb0302-6a1e-4e41-acd4-fe55fb8440cd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/svit/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/svit/config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/models/patch_scaler.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/patch_scaler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/svit/training/energy.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/training/energy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,7 +67,7 @@
       <workItem from="1744742550545" duration="9250000" />
       <workItem from="1744901954274" duration="193000" />
       <workItem from="1744902156279" duration="669000" />
-      <workItem from="1744902834213" duration="4871000" />
+      <workItem from="1744902834213" duration="5087000" />
     </task>
     <servers />
   </component>
