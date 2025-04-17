@@ -23,8 +23,6 @@ def energy_function(model: nn.Module,
     :param val_dataloader:
     :param criterion:
     :param lambda_l1:
-    :param target_sparsity:
-    :param lambda_sparsity:
     :param target_accuracy:
     :param lambda_accuracy:
     :param multi_prune:
@@ -43,19 +41,19 @@ def energy_function(model: nn.Module,
     model.eval()
     accuracy_list = []
     with torch.no_grad():
-      for data in tqdm(val_dataloader, leave=False):
-        x, y = data
-        x = x.to(device)
-        y = y.to(device)
-        output = model(x)
-        predict = torch.argmax(output, dim=-1)
-        accuracy_list.append((predict == y).sum().item() / y.shape[0])
+        for data in tqdm(val_dataloader, leave=False):
+            x, y = data
+            x = x.to(device)
+            y = y.to(device)
+            output = model(x)
+            predict = torch.argmax(output, dim=-1)
+            accuracy_list.append((predict == y).sum().item() / y.shape[0])
     model.train()
     accuracy = sum(accuracy_list) / len(accuracy_list)
     if accuracy < target_accuracy:
-      accuracy_penalty = 0
+        accuracy_penalty = 0
     else:
-      accuracy_penalty = (accuracy / target_accuracy) ** lambda_accuracy
+        accuracy_penalty = (accuracy / target_accuracy) ** lambda_accuracy
 
     F = cost + scaler_l1 + lambda_accuracy * accuracy_penalty
     return F, cost, scaler_l1, accuracy

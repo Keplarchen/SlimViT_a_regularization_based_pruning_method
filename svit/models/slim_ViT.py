@@ -27,10 +27,12 @@ class SlimViT(nn.Module):
         self.vit = vit_b_16(weights="DEFAULT" if fine_tune else None)
         self.head = SlimViTHead(out_features=head_num[dataset])
         if self.multi_prune:
-            self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1)
-                                      for _ in range(len(self.vit.encoder.layers))])
+            self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
+                                                     patch_dim=self.vit.encoder.pos_embedding.shape[2])
+                                        for _ in range(len(self.vit.encoder.layers))])
         else:
-            self.scaler = PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1)
+            self.scaler = PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
+                                      patch_dim=self.vit.encoder.pos_embedding.shape[2])
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """

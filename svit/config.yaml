@@ -10,6 +10,7 @@ models:
   init_scale_threshold: 0.5
   init_sparsity_threshold: 0.5
   multi_prune: True
+  granularity: embedding
 
 training:
   batch_size: 64
