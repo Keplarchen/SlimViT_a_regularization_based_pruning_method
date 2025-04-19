@@ -1,5 +1,7 @@
 data:
-  train_dataset: cifar100
+  train_dataset: imagenette
+  train_root: train
+  test_root: test
   resize_size: 224
   val_dataset: True
   train_ratio: 0.98

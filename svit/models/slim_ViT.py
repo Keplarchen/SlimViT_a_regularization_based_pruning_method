@@ -10,6 +10,7 @@ from torchvision.models import vit_b_16, ViT_B_16_Weights
 head_num = {
     "cifar10": 10,
     "cifar100": 100,
+    "imagenette": 10,
 }
 
 class SlimViT(nn.Module):
