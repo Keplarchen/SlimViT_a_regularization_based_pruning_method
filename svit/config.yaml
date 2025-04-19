@@ -1,7 +1,7 @@
 data:
   train_dataset: imagenette
-  train_root: train
-  test_root: test
+  train_root: /content/drive/MyDrive/NYU-CS/2025Spring/Efficient_AI/final/imagenette2-320/train
+  test_root: /content/drive/MyDrive/NYU-CS/2025Spring/Efficient_AI/final/imagenette2-320/val
   resize_size: 224
   val_dataset: True
   train_ratio: 0.98

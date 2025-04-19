@@ -42,25 +42,25 @@ def get_scheduler(optimizer: optim.Optimizer,
 def train(model:nn.Module,
           train_dataloader: DataLoader,
           val_dataloader: DataLoader,
-          config: dict=config) -> None:
+          config_var: dict=config) -> None:
     """
 
     :param model:
     :param train_dataloader:
     :param val_dataloader:
-    :param config:
+    :param config_var:
     :return:
     """
-    epoch = config["training"]["epoch"]
-    accuracy_tradeoff = config["energy"]["accuracy_tradeoff"]
+    epoch = config_var["training"]["epoch"]
+    accuracy_tradeoff = config_var["energy"]["accuracy_tradeoff"]
 
     criterion = get_criterion()
 
-    lr = config["training"]["learning_rate"]
-    weight_decay = config["training"]["weight_decay"]
+    lr = config_var["training"]["learning_rate"]
+    weight_decay = config_var["training"]["weight_decay"]
     optimizer = get_optimizer(model, lr, weight_decay)
 
-    t_max = config["training"]["T_max"]
+    t_max = config_var["training"]["T_max"]
     scheduler = get_scheduler(optimizer, t_max)
 
     model.to(device)
