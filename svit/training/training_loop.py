@@ -72,6 +72,7 @@ def train(model:nn.Module,
     cost_list = []
     l1_list = []
     accuracy_list = []
+    best_accuracy = 0.0
     for epoch in pbar:
         F_list_e = []
         cost_list_e = []
@@ -115,6 +116,10 @@ def train(model:nn.Module,
         cost_list.append(average_cost)
         l1_list.append(average_l1)
         accuracy_list.append(average_accuracy)
+
+        if average_accuracy > best_accuracy:
+            best_accuracy = average_accuracy
+            torch.save(model.state_dict(), "checkpoint.pt")
 
         pbar.set_postfix({"energy: ": average_F, "cost: ": average_cost, "l1: ": average_l1, "accuracy: ": average_accuracy})
     return model
