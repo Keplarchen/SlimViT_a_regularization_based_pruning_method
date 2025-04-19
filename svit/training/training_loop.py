@@ -18,8 +18,8 @@ def get_criterion() -> nn.Module:
     return nn.CrossEntropyLoss()
 
 def get_optimizer(model: nn.Module,
-                  lr: float=config["training"]["learning_rate"],
-                  weight_decay: float=config["training"]["weight_decay"]) -> optim.Optimizer:
+                  lr: float,
+                  weight_decay: float) -> optim.Optimizer:
     """
 
     :param model:
@@ -30,7 +30,7 @@ def get_optimizer(model: nn.Module,
     return optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
 
 def get_scheduler(optimizer: optim.Optimizer,
-                  t_max: int=config["training"]["T_max"]) -> CosineAnnealingLR:
+                  t_max: int) -> CosineAnnealingLR:
     """
 
     :param optimizer:
@@ -42,20 +42,26 @@ def get_scheduler(optimizer: optim.Optimizer,
 def train(model:nn.Module,
           train_dataloader: DataLoader,
           val_dataloader: DataLoader,
-          epoch: int=config["training"]["epoch"],
-          accuracy_tradeoff: bool=config["energy"]["accuracy_tradeoff"]) -> None:
+          config: dict=config) -> None:
     """
 
     :param model:
     :param train_dataloader:
     :param val_dataloader:
-    :param epoch:
-    :param accuracy_tradeoff:
+    :param config:
     :return:
     """
+    epoch = config["training"]["epoch"]
+    accuracy_tradeoff = config["energy"]["accuracy_tradeoff"]
+
     criterion = get_criterion()
-    optimizer = get_optimizer(model)
-    scheduler = get_scheduler(optimizer)
+
+    lr = config["training"]["learning_rate"]
+    weight_decay = config["training"]["weight_decay"]
+    optimizer = get_optimizer(model, lr, weight_decay)
+
+    t_max = config["training"]["T_max"]
+    scheduler = get_scheduler(optimizer, t_max)
 
     model.to(device)
     criterion.to(device)

@@ -13,30 +13,35 @@ head_num = {
 }
 
 class SlimViT(nn.Module):
-    def __init__(self, dataset: str=config["data"]["train_dataset"],
-                 fine_tune: bool=config["models"]["fine_tune"],
-                 multi_prune: bool=config["models"]["multi_prune"],
+    def __init__(self, config:dict = config,
                  is_base_model: bool=False) -> None:
         """
 
-        :param dataset:
-        :param fine_tune:
-        :param multi_prune:
+        :param config:
         :param is_base_model:
         """
         super().__init__()
         self.is_base_model = is_base_model
-        self.multi_prune = multi_prune
-        self.vit = vit_b_16(weights=ViT_B_16_Weights.DEFAULT if fine_tune else None)
-        self.head = nn.Linear(in_features=self.vit.encoder.pos_embedding.shape[-1], out_features=head_num[dataset])
+        self.multi_prune = config["models"]["multi_prune"]
+        self.vit = vit_b_16(weights=ViT_B_16_Weights.DEFAULT if config["models"]["fine_tune"] else None)
+        self.head = nn.Linear(in_features=self.vit.encoder.pos_embedding.shape[-1], out_features=head_num[config["data"]["train_dataset"]])
         if self.multi_prune:
             self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
                                                      patch_dim=self.vit.encoder.pos_embedding.shape[2],
-                                                     is_base_model=self.is_base_model)
+                                                     is_base_model=self.is_base_model,
+                                                     init_scale=config["models"]["init_scale"],
+                                                     init_scale_threshold=config["models"]["init_scale_threshold"],
+                                                     init_sparsity_threshold=config["models"]["init_sparsity_threshold"],
+                                                     granularity=config["models"]["granularity"])
                                         for _ in range(len(self.vit.encoder.layers) - 1)])
         else:
             self.scaler = PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
-                                      patch_dim=self.vit.encoder.pos_embedding.shape[2], is_base_model=is_base_model)
+                                      patch_dim=self.vit.encoder.pos_embedding.shape[2],
+                                      is_base_model=is_base_model,
+                                      init_scale=config["models"]["init_scale"],
+                                      init_scale_threshold=config["models"]["init_scale_threshold"],
+                                      init_sparsity_threshold=config["models"]["init_sparsity_threshold"],
+                                      granularity=config["models"]["granularity"])
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """

@@ -6,11 +6,11 @@ from svit import config
 class PatchScaler(nn.Module):
     def __init__(self, patch_size: int,
                  patch_dim: int,
-                 is_base_model: bool=False,
-                 init_scale: float=config["models"]["init_scale"],
-                 init_scale_threshold: float=config["models"]["init_scale_threshold"],
-                 init_sparsity_threshold: float=config["models"]["init_sparsity_threshold"],
-                 granularity: str=config["models"]["granularity"]) -> None:
+                 is_base_model: bool,
+                 init_scale: float,
+                 init_scale_threshold: float,
+                 init_sparsity_threshold: float,
+                 granularity: str) -> None:
         """
 
         :param patch_size:

@@ -3,28 +3,22 @@ from svit.data.dataset import cifar10_dataset, cifar100_dataset, imagenette_data
 
 from torch.utils.data import DataLoader
 
-def get_dataloader(dataset: str=config["data"]["train_dataset"],
-                     train_root: str=config["data"]["train_root"],
-                     test_root: str=config["data"]["test_root"],
-                     val_dataset: bool=config["data"]["val_dataset"],
-                     train_ratio: float=config["data"]["train_ratio"],
-                     batch_size: int=config["training"]["batch_size"],
-                     train_shuffle: bool=True,
-                     val_shuffle: bool=False,
-                     resize_size: int=config["data"]["resize_size"]) -> tuple[DataLoader, DataLoader, DataLoader]:
+def get_dataloader(config: dict=config) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
 
-    :param dataset:
-    :param train_root:
-    :param test_root:
-    :param val_dataset:
-    :param train_ratio:
-    :param batch_size:
-    :param train_shuffle:
-    :param val_shuffle:
-    :param resize_size:
+    :param config:
     :return:
     """
+    dataset = config["data"]["train_dataset"]
+    train_root = config["data"]["train_root"]
+    test_root = config["data"]["test_root"]
+    val_dataset = config["data"]["val_dataset"]
+    train_ratio = config["data"]["train_ratio"]
+    batch_size = config["training"]["batch_size"]
+    train_shuffle = True
+    val_shuffle = False
+    resize_size = config["data"]["resize_size"]
+
     if dataset == "cifar10":
         train_dataset, val_dataset, test_dataset = cifar10_dataset(train_root, test_root, val_dataset, train_ratio, resize_size)
     elif dataset == "cifar100":
