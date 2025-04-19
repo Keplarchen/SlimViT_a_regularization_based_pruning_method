@@ -44,7 +44,7 @@ class SlimViT(nn.Module):
             self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
                                                      patch_dim=self.vit.encoder.pos_embedding.shape[2],
                                                      is_base_model=self.is_base_model)
-                                        for _ in range(len(self.vit.encoder.layers))])
+                                        for _ in range(len(self.vit.encoder.layers) - 1)])
         else:
             self.scaler = PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
                                       patch_dim=self.vit.encoder.pos_embedding.shape[2], is_base_model=is_base_model)
@@ -73,8 +73,11 @@ class SlimViT(nn.Module):
 
         if self.multi_prune:
             for i, layer in enumerate(self.vit.encoder.layers):
-                x = self.scaler[i](x)
-                x = layer(x)
+                if i !=  len(self.vit.encoder.layers) - 1:
+                    x = layer(x)
+                    x = self.scaler[i](x)
+                else:
+                    x = layer(x)
             x = self.vit.encoder.ln(x)
         else:
             x = self.scaler(x)

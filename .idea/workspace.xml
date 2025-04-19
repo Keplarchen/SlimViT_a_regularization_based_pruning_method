@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93eb0302-6a1e-4e41-acd4-fe55fb8440cd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/svit/utils/accuracy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/svit/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/svit/data/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/svit/data/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/svit/data/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/transform.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/svit/models/patch_scaler.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/patch_scaler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/svit/models/slim_ViT.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/slim_ViT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/training/energy.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/training/energy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/training/training_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/training/training_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,22 +36,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.slim_ViT.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "inlay.hints",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.slim_ViT.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="slim_ViT" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="svit_code" />
@@ -102,7 +101,8 @@
       <workItem from="1744742550545" duration="9250000" />
       <workItem from="1744901954274" duration="193000" />
       <workItem from="1744902156279" duration="669000" />
-      <workItem from="1744902834213" duration="13994000" />
+      <workItem from="1744902834213" duration="17441000" />
+      <workItem from="1745073189765" duration="2684000" />
     </task>
     <servers />
   </component>

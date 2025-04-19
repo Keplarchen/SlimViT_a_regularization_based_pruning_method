@@ -1,6 +1,6 @@
-from svit.data.transform import CIFAR_transform
+from svit.data.transform import CIFAR_transform, ImageNet_transform
 
-from torchvision.datasets import CIFAR10, CIFAR100
+from torchvision.datasets import CIFAR10, CIFAR100, ImageFolder
 from torch.utils.data import random_split, Dataset
 
 def dataset_split(full_dataset: Dataset,
@@ -86,3 +86,30 @@ def cifar_dataset(target_dataset: str,
     else:
         train_dataset, val_dataset = full_dataset, None
     return train_dataset, val_dataset, test_dataset
+
+def imagenette_dataset(train_root: str,
+                       test_root: str,
+                       val_dataset: bool,
+                       train_ratio: float,
+                       resize_size: int) -> tuple[Dataset, Dataset, Dataset]:
+    """
+    Returns datasets for the Imagenette dataset, allowing for training, validation,
+    and testing splits with specified transformations. Handles resizing and optional
+    generation of a validation dataset.
+
+    :param train_root: Root directory for the training dataset.
+    :param test_root: Root directory for the testing dataset.
+    :param val_dataset: Boolean indicating whether to create a validation dataset.
+    :param train_ratio: Fraction of the training data to be used for training
+        when creating a validation dataset.
+    :param resize_size: Desired size for resizing images in the dataset.
+    :return: A tuple containing the training dataset, validation dataset (or None if
+        no validation dataset is created), and testing dataset.
+    """
+    imagenette_full = ImageFolder(train_root, transform=ImageNet_transform(resize_size))
+    imagenette_test = ImageFolder(test_root, transform=ImageNet_transform(resize_size))
+    if val_dataset:
+        imagenette_train, imagenette_val = dataset_split(imagenette_full, train_ratio)
+    else:
+        imagenette_train, imagenette_val = imagenette_full, None
+    return imagenette_train, imagenette_val, imagenette_test

@@ -1,10 +1,10 @@
 from svit import config
-from svit.data.dataset import cifar_dataset
+from svit.data.dataset import cifar_dataset, imagenette_dataset
 
 from torch.utils.data import DataLoader
 
-def cifar_dataloader(dataset: str=config["data"]["train_dataset"],
-                     root: str=config["data"]["train_dataset"],
+def cifar_dataloader(dataset: str,
+                     root: str,
                      download: bool=True,
                      val_dataset: bool=config["data"]["val_dataset"],
                      train_ratio: float=config["data"]["train_ratio"],
@@ -37,6 +37,40 @@ def cifar_dataloader(dataset: str=config["data"]["train_dataset"],
         test dataloader, respectively.
     """
     train_dataset, val_dataset, test_dataset = cifar_dataset(dataset, root, download, val_dataset, train_ratio, resize_size)
+
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=train_shuffle)
+    val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=val_shuffle)
+    test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    return train_dataloader, val_dataloader, test_dataloader
+
+def imagenette_dataloader(train_root: str,
+                          test_root: str,
+                          val_dataset: bool = config["data"]["val_dataset"],
+                          train_ratio: float = config["data"]["train_ratio"],
+                          batch_size: int = config["training"]["batch_size"],
+                          train_shuffle: bool = True,
+                          val_shuffle: bool = False,
+                          resize_size: int = config["data"]["resize_size"]) -> tuple[DataLoader, DataLoader, DataLoader]:
+    """
+    Creates and returns DataLoaders for the Imagenette dataset, including training, validation,
+    and test datasets. The function builds these DataLoaders by calling the `imagenette_dataset`
+    function to create the datasets and then wraps them with PyTorch's `DataLoader` class. It
+    allows customization of dataset paths, dataset resizing, dataset ratios for training/validation
+    splits, and DataLoader-specific parameters like batching and shuffling.
+
+    :param train_root: Directory path containing training dataset.
+    :param test_root: Directory path containing test dataset.
+    :param val_dataset: Boolean indicating whether to include a validation dataset.
+    :param train_ratio: Ratio of the dataset to allocate to the training set.
+    :param batch_size: Number of samples per batch for DataLoaders.
+    :param train_shuffle: Whether to shuffle the training dataset.
+    :param val_shuffle: Whether to shuffle the validation dataset.
+    :param resize_size: Size to which the dataset images should be resized.
+    :return: A tuple containing the training DataLoader, validation DataLoader,
+        and test DataLoader.
+    """
+    train_dataset, val_dataset, test_dataset = imagenette_dataset(train_root, test_root, val_dataset, train_ratio, resize_size)
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=train_shuffle)
     val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=val_shuffle)

@@ -6,28 +6,31 @@ from svit import config
 class PatchScaler(nn.Module):
     def __init__(self, patch_size: int,
                  patch_dim: int,
-                 is_base_model: bool,
+                 is_base_model: bool=False,
                  init_scale: float=config["models"]["init_scale"],
                  init_scale_threshold: float=config["models"]["init_scale_threshold"],
                  init_sparsity_threshold: float=config["models"]["init_sparsity_threshold"],
                  granularity: str=config["models"]["granularity"]) -> None:
         """
-        Initializes a model component with parameters for scaling and sparsity threshold
-        based on specified granularity. The initialization supports per-patch and
-        per-embedding configurations, constructing appropriate scaling parameters for
-        the given granularity.
+        Initializes the model with specified parameters for controlling granularity, scaling,
+        and thresholding configurations. This constructor defines the granularity of the model
+        and initializes the scaling coefficients and thresholds based on the specified parameters.
 
-        :param patch_size: The size of each patch for which the scaling or embedding
-                           parameters are applied.
-        :param patch_dim: The dimensionality of individual patches, relevant for the
-                          "embedding" granularity.
-        :param init_scale: Initial scaling factor applied to the patches or embeddings.
-        :param init_scale_threshold: Threshold for managing the scale values.
-        :param init_sparsity_threshold: Threshold for managing sparsity values.
-        :param granularity: Specifies the granularity mode, which can be either "patch"
-                            or "embedding".
+        :param patch_size: Integer indicating the size of the patch.
+        :param patch_dim: Integer indicating the dimensionality of the patch.
+        :param is_base_model: Boolean flag specifying whether this is the base model. Defaults to False.
+        :param init_scale: Float value specifying the initial scaling factor. Defaults to
+                           the value from ``config["models"]["init_scale"]``.
+        :param init_scale_threshold: Float value specifying the initial threshold for scaling.
+                                     Defaults to the value from
+                                     ``config["models"]["init_scale_threshold"]``.
+        :param init_sparsity_threshold: Float value specifying the initial threshold for sparsity.
+                                        Defaults to the value from
+                                        ``config["models"]["init_sparsity_threshold"]``.
+        :param granularity: String indicating the granularity level. Typically "patch" or
+                            "embedding". Defaults to the value from ``config["models"]["granularity"]``.
 
-        :raises ValueError: If the provided granularity is not recognized.
+        :raises ValueError: Raised when an unsupported granularity is provided.
         """
         super().__init__()
         self.granularity = granularity

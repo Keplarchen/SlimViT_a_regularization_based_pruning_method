@@ -32,3 +32,21 @@ def CIFAR_transform(target_dataset: str,
         transforms.ToTensor(),
         transforms.Normalize(mean=mean[target_dataset], std=std[target_dataset]),
     ])
+
+def ImageNet_transform(resize_size: int) -> transforms.Compose:
+    """
+    Creates a transformation pipeline for preprocessing ImageNet dataset images.
+
+    The transformation includes resizing the image to the specified dimensions
+    and converting it to a tensor format. This is useful for preparing image
+    data to be used as input for machine learning models.
+
+    :param resize_size: Target size for resizing images. The resulting image
+        will have dimensions `[resize_size, resize_size]`.
+    :return: A composed transformation pipeline for resizing and converting
+        images to tensors.
+    """
+    return transforms.Compose([
+        transforms.Resize([resize_size, resize_size]),
+        transforms.ToTensor(),
+    ])
