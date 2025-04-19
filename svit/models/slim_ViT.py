@@ -10,6 +10,7 @@ head_num = {
     "cifar10": 10,
     "cifar100": 100,
     "imagenette": 10,
+    "imagenet": 1000
 }
 
 class SlimViT(nn.Module):
@@ -22,26 +23,17 @@ class SlimViT(nn.Module):
         """
         super().__init__()
         self.is_base_model = is_base_model
-        self.multi_prune = config_var["models"]["multi_prune"]
         self.vit = vit_b_16(weights=ViT_B_16_Weights.DEFAULT if config_var["models"]["fine_tune"] else None)
-        self.head = nn.Linear(in_features=self.vit.encoder.pos_embedding.shape[-1], out_features=head_num[config_var["data"]["train_dataset"]])
-        if self.multi_prune:
-            self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
-                                                     patch_dim=self.vit.encoder.pos_embedding.shape[2],
-                                                     is_base_model=self.is_base_model,
-                                                     init_scale=config_var["models"]["init_scale"],
-                                                     init_scale_threshold=config_var["models"]["init_scale_threshold"],
-                                                     init_sparsity_threshold=config_var["models"]["init_sparsity_threshold"],
-                                                     granularity=config_var["models"]["granularity"])
-                                        for _ in range(len(self.vit.encoder.layers) - 1)])
-        else:
-            self.scaler = PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
-                                      patch_dim=self.vit.encoder.pos_embedding.shape[2],
-                                      is_base_model=is_base_model,
-                                      init_scale=config_var["models"]["init_scale"],
-                                      init_scale_threshold=config_var["models"]["init_scale_threshold"],
-                                      init_sparsity_threshold=config_var["models"]["init_sparsity_threshold"],
-                                      granularity=config_var["models"]["granularity"])
+        self.head = nn.Linear(in_features=self.vit.encoder.pos_embedding.shape[-1],
+                              out_features=head_num[config_var["data"]["train_dataset"]])
+        self.scaler = nn.ModuleList([PatchScaler(patch_size=self.vit.encoder.pos_embedding.shape[1] - 1,
+                                                 patch_dim=self.vit.encoder.pos_embedding.shape[2],
+                                                 is_base_model=self.is_base_model,
+                                                 init_scale=config_var["models"]["init_scale"],
+                                                 init_scale_threshold=config_var["models"]["init_scale_threshold"],
+                                                 init_sparsity_threshold=config_var["models"]["init_sparsity_threshold"],
+                                                 granularity=config_var["models"]["granularity"])
+                                     for _ in range(len(self.vit.encoder.layers) - 1)])
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -50,22 +42,23 @@ class SlimViT(nn.Module):
         :return:
         """
         x = self.vit._process_input(x)
+        n = x.shape[0]
 
-        cls = self.vit.class_token.expand(x.shape[0], -1, -1)
+        cls = self.vit.class_token.expand(n, -1, -1)
         x = torch.cat((cls, x), dim=1)
-        x = x + self.vit.encoder.pos_embedding
 
-        if self.multi_prune:
-            for i, layer in enumerate(self.vit.encoder.layers):
-                if i !=  len(self.vit.encoder.layers) - 1:
-                    x = layer(x)
-                    x = self.scaler[i](x)
-                else:
-                    x = layer(x)
-            x = self.vit.encoder.ln(x)
-        else:
-            x = self.scaler(x)
-            x = self.vit.encoder(x)
-        x = x[:, 0, :]
+        x + self.vit.encoder.pos_embedding
+        x = self.vit.encoder.dropout(x)
+
+        for i, layer in enumerate(self.vit.encoder.layers):
+            if i !=  len(self.vit.encoder.layers) - 1:
+                x = layer(x)
+                x = self.scaler[i](x)
+            else:
+                x = layer(x)
+        self.vit.encoder.ln(x)
+
+        x = x[:, 0]
         x = self.head(x)
+
         return x

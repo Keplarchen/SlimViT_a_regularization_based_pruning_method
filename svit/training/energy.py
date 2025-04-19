@@ -14,7 +14,6 @@ def energy_function(model: nn.Module,
                     lambda_l1: float=config["energy"]["lambda_l1"],
                     target_accuracy: float=config["energy"]["target_accuracy"],
                     lambda_accuracy: float=config["energy"]["lambda_accuracy"],
-                    multi_prune: bool=config["models"]["multi_prune"],
                     accuracy_tradeoff: bool=config["energy"]["accuracy_tradeoff"]) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, float]:
     """
 
@@ -33,10 +32,7 @@ def energy_function(model: nn.Module,
     cost = criterion(output, y)
     scaler_l1 = 0.0
     if not model.is_base_model:
-        if multi_prune:
-            scaler_l1 = sum(torch.norm(s.scaler, p=1) for s in model.scaler) * lambda_l1
-        else:
-            scaler_l1 = torch.norm(model.scaler.scaler, p=1) * lambda_l1
+        scaler_l1 = sum(torch.norm(s.scaler, p=1) for s in model.scaler) * lambda_l1
 
     total_correct = 0
     total_samples = 0

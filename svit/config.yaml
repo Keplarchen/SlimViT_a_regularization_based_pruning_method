@@ -11,7 +11,6 @@ models:
   init_scale: 1.0
   init_scale_threshold: 0.001
   init_sparsity_threshold: 0.9
-  multi_prune: True
   granularity: embedding
 
 training:

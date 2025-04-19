@@ -27,7 +27,7 @@ def get_optimizer(model: nn.Module,
     :param weight_decay:
     :return:
     """
-    return optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
+    return optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
 
 def get_scheduler(optimizer: optim.Optimizer,
                   t_max: int) -> CosineAnnealingLR:
