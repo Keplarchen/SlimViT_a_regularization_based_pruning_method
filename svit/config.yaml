@@ -4,24 +4,24 @@ data:
   test_root: /content/drive/MyDrive/NYU-CS/2025Spring/Efficient_AI/final/imagenette2-320/val
   resize_size: 224
   val_dataset: True
-  train_ratio: 0.98
+  train_ratio: 0.95
 
 models:
   fine_tune: True
   init_scale: 1.0
-  init_scale_threshold: 0.001
+  init_scale_threshold: 0.01
   init_sparsity_threshold: 0.9
   granularity: embedding
 
 training:
   batch_size: 128
-  epoch: 10
-  learning_rate: 0.001
-  weight_decay: 0.001
-  T_max: 50
+  epoch: 20
+  learning_rate: 0.00025
+  weight_decay: 0.01
+  T_max: 180000
 
 energy:
   accuracy_tradeoff: False
-  lambda_l1: 0.0000025
+  lambda_l1: 0.000001
   lambda_accuracy: -0.7
   target_accuracy: 0.9

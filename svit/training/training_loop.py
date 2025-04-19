@@ -42,7 +42,7 @@ def get_scheduler(optimizer: optim.Optimizer,
 def train(model:nn.Module,
           train_dataloader: DataLoader,
           val_dataloader: DataLoader,
-          config_var: dict=config) -> None:
+          config_var: dict=config) -> nn.Module:
     """
 
     :param model:
@@ -117,3 +117,4 @@ def train(model:nn.Module,
         accuracy_list.append(average_accuracy)
 
         pbar.set_postfix({"energy: ": average_F, "cost: ": average_cost, "l1: ": average_l1, "accuracy: ": average_accuracy})
+    return model
