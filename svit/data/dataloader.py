@@ -12,7 +12,19 @@ def get_dataloader(dataset: str=config["data"]["train_dataset"],
                      train_shuffle: bool=True,
                      val_shuffle: bool=False,
                      resize_size: int=config["data"]["resize_size"]) -> tuple[DataLoader, DataLoader, DataLoader]:
+    """
 
+    :param dataset:
+    :param train_root:
+    :param test_root:
+    :param val_dataset:
+    :param train_ratio:
+    :param batch_size:
+    :param train_shuffle:
+    :param val_shuffle:
+    :param resize_size:
+    :return:
+    """
     if dataset == "cifar10":
         train_dataset, val_dataset, test_dataset = cifar10_dataset(train_root, test_root, val_dataset, train_ratio, resize_size)
     elif dataset == "cifar100":

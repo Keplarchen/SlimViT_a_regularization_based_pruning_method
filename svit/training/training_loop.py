@@ -12,14 +12,8 @@ from tqdm.notebook import tqdm
 
 def get_criterion() -> nn.Module:
     """
-    Provides a criterion for neural network training.
 
-    This function returns an instance of a loss function suitable for use in
-    training a neural network. The returned criterion calculates the
-    cross-entropy loss, typically used for classification tasks.
-
-    :return: A PyTorch `nn.Module` instance representing the loss function.
-    :rtype: nn.Module
+    :return:
     """
     return nn.CrossEntropyLoss()
 
@@ -27,40 +21,21 @@ def get_optimizer(model: nn.Module,
                   lr: float=config["training"]["learning_rate"],
                   weight_decay: float=config["training"]["weight_decay"]) -> optim.Optimizer:
     """
-    Get an optimizer for the given model using Adam optimization algorithm.
 
-    This function initializes and returns an Adam optimizer with the specified
-    learning rate and weight decay, which are typically used for training neural
-    network models. The optimizer is configured to handle the model's parameters.
-
-    :param model: The neural network model whose parameters the optimizer will update.
-    :type model: nn.Module
-    :param lr: The learning rate to use for the optimizer. If not provided,
-        it defaults to a value specified in the configuration.
-    :type lr: float
-    :param weight_decay: The weight decay (L2 regularization) to apply during optimization.
-        If not provided, it defaults to a value specified in the configuration.
-    :type weight_decay: float
-    :return: An Adam optimizer instance configured for the given model and parameters.
-    :rtype: optim.Optimizer
+    :param model:
+    :param lr:
+    :param weight_decay:
+    :return:
     """
     return optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
 
 def get_scheduler(optimizer: optim.Optimizer,
                   t_max: int=config["training"]["T_max"]) -> CosineAnnealingLR:
     """
-    Creates and returns a cosine annealing learning rate scheduler.
 
-    This function generates a learning rate scheduler using PyTorch's
-    CosineAnnealingLR. The scheduler varies the learning rate according
-    to a cosine function, decreasing it over the number of epochs
-    or iterations specified by the T_max parameter.
-
-    :param optimizer: Optimizer whose learning rate is being scheduled.
-    :param t_max: Maximum number of iterations or epochs for the cosine
-        annealing schedule.
-    :return: A CosineAnnealingLR instance configured to modify the learning
-        rate of the provided optimizer according to the cosine schedule.
+    :param optimizer:
+    :param t_max:
+    :return:
     """
     return optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=t_max)
 
@@ -70,25 +45,13 @@ def train(model:nn.Module,
           epoch: int=config["training"]["epoch"],
           accuracy_tradeoff: bool=config["energy"]["accuracy_tradeoff"]) -> None:
     """
-    Trains a neural network model using a specified dataset, loss function, and optimizer.
-    This function iterates through a number of epochs, performs forward and backward passes,
-    and updates the model weights. Additionally, it computes relevant metrics such as energy,
-    cost, l1 regularization, and accuracy during each training step. These metrics are averaged
-    for each epoch and used to evaluate model performance and behavior.
 
-    :param model: The neural network model to be trained.
-    :type model: nn.Module
-    :param train_dataloader: Dataloader containing the training dataset.
-    :type train_dataloader: DataLoader
-    :param val_dataloader: Dataloader containing the validation dataset.
-    :type val_dataloader: DataLoader
-    :param epoch: Number of training epochs. Defaults to `config["training"]["epoch"]`.
-    :type epoch: int
-    :param accuracy_tradeoff: Whether to prioritize accuracy during training. Defaults to
-        `config["energy"]["accuracy_tradeoff"]`.
-    :type accuracy_tradeoff: bool
-    :return: This function does not return any value.
-    :rtype: None
+    :param model:
+    :param train_dataloader:
+    :param val_dataloader:
+    :param epoch:
+    :param accuracy_tradeoff:
+    :return:
     """
     criterion = get_criterion()
     optimizer = get_optimizer(model)

@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93eb0302-6a1e-4e41-acd4-fe55fb8440cd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/data/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/dataloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/data/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/data/transform.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/data/transform.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/models/patch_scaler.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/patch_scaler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/models/slim_ViT.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/slim_ViT.py" afterDir="false" />
-    </list>
+    <list default="true" id="93eb0302-6a1e-4e41-acd4-fe55fb8440cd" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +95,7 @@
       <workItem from="1744901954274" duration="193000" />
       <workItem from="1744902156279" duration="669000" />
       <workItem from="1744902834213" duration="17441000" />
-      <workItem from="1745073189765" duration="2684000" />
+      <workItem from="1745073189765" duration="3593000" />
     </task>
     <servers />
   </component>

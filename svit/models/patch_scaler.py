@@ -12,25 +12,14 @@ class PatchScaler(nn.Module):
                  init_sparsity_threshold: float=config["models"]["init_sparsity_threshold"],
                  granularity: str=config["models"]["granularity"]) -> None:
         """
-        Initializes the model with specified parameters for controlling granularity, scaling,
-        and thresholding configurations. This constructor defines the granularity of the model
-        and initializes the scaling coefficients and thresholds based on the specified parameters.
 
-        :param patch_size: Integer indicating the size of the patch.
-        :param patch_dim: Integer indicating the dimensionality of the patch.
-        :param is_base_model: Boolean flag specifying whether this is the base model. Defaults to False.
-        :param init_scale: Float value specifying the initial scaling factor. Defaults to
-                           the value from ``config["models"]["init_scale"]``.
-        :param init_scale_threshold: Float value specifying the initial threshold for scaling.
-                                     Defaults to the value from
-                                     ``config["models"]["init_scale_threshold"]``.
-        :param init_sparsity_threshold: Float value specifying the initial threshold for sparsity.
-                                        Defaults to the value from
-                                        ``config["models"]["init_sparsity_threshold"]``.
-        :param granularity: String indicating the granularity level. Typically "patch" or
-                            "embedding". Defaults to the value from ``config["models"]["granularity"]``.
-
-        :raises ValueError: Raised when an unsupported granularity is provided.
+        :param patch_size:
+        :param patch_dim:
+        :param is_base_model:
+        :param init_scale:
+        :param init_scale_threshold:
+        :param init_sparsity_threshold:
+        :param granularity:
         """
         super().__init__()
         self.granularity = granularity
@@ -47,22 +36,9 @@ class PatchScaler(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
-        Processes an input tensor by applying scaling and sparsity gating mechanisms
-        based on predefined thresholds and granularity settings.
 
-        The forward method splits the input tensor into class (cls) and patch components,
-        applies scaling to the patch segment depending on a granularity setting, and
-        performs gated sparsity and scaling adjustments. These adjustments are used
-        to restrict and modify the patch values according to specified thresholds
-        and conditions.
-
-        :param x: Input tensor with the first dimension representing batch size,
-                  second dimension (split into class and patch components), and
-                  third dimension representing feature dimensions.
-        :type x: torch.Tensor
-        :return: Tensor combining the class segment and sparsity-gated patch segment
-                 after processing.
-        :rtype: torch.Tensor
+        :param x:
+        :return:
         """
         if not self.is_base_model:
             cls = x[:, :1, :]
