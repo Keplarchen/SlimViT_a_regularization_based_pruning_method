@@ -55,7 +55,7 @@ class PatchScaler(nn.Module):
                 abs_scaled = scaled_patch.abs()
                 scale_hard_mask = abs_scaled > scale_th
                 scale_hard_mask = scaled_patch > self.scale_threshold
-            scale_soft_mask = torch.sigmoid(scaled_patch - self.scale_threshold)
+            scale_soft_mask = torch.sigmoid(abs_scaled - scale_th)
             scale_gate = scale_hard_mask + scale_soft_mask - scale_soft_mask.detach()
             scale_gated_patch = scaled_patch * scale_gate
 
