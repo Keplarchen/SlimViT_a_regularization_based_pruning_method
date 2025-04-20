@@ -48,19 +48,21 @@ class PatchScaler(nn.Module):
             else:
                 raise ValueError(f"Unknown granularity: {self.granularity}")
 
+            temperature = 10.0
+
             with torch.no_grad():
                 scale_th = self.scale_threshold.abs()
                 abs_scaled = scaled_patch.abs()
                 scale_hard_mask = abs_scaled > scale_th
                 scale_hard_mask = scaled_patch > self.scale_threshold
-            scale_soft_mask = torch.sigmoid(abs_scaled - scale_th)
+            scale_soft_mask = torch.sigmoid(temperature * (abs_scaled - scale_th))
             scale_gate = scale_hard_mask + scale_soft_mask - scale_soft_mask.detach()
             scale_gated_patch = scaled_patch * scale_gate
 
             with torch.no_grad():
                 patch_sparsity = (scale_gated_patch.abs() < 1e-4).float().mean(dim=-1, keepdim=True)
                 sparsity_hard_mask = patch_sparsity < self.sparsity_threshold
-            sparsity_soft_mask = torch.sigmoid(self.sparsity_threshold - patch_sparsity)
+            sparsity_soft_mask = torch.sigmoid(temperature * (self.sparsity_threshold - patch_sparsity))
             sparsity_gate = sparsity_hard_mask + sparsity_soft_mask - sparsity_soft_mask.detach()
             sparsity_gated_patch = scale_gated_patch * sparsity_gate
 
