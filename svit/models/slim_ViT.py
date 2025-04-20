@@ -47,7 +47,7 @@ class SlimViT(nn.Module):
         cls = self.vit.class_token.expand(n, -1, -1)
         x = torch.cat((cls, x), dim=1)
 
-        x + self.vit.encoder.pos_embedding
+        x = x + self.vit.encoder.pos_embedding
         x = self.vit.encoder.dropout(x)
 
         for i, layer in enumerate(self.vit.encoder.layers):
