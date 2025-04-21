@@ -42,7 +42,7 @@ def get_scheduler(optimizer: optim.Optimizer,
 def train(model:nn.Module,
           train_dataloader: DataLoader,
           val_dataloader: DataLoader,
-          config_var: dict=config) -> nn.Module:
+          config_var: dict=config) -> None:
     """
 
     :param model:
@@ -92,6 +92,7 @@ def train(model:nn.Module,
 
             F, cost, l1, a = energy_function(model, output, y, val_dataloader, criterion)
 
+            forward_sparsity = model.get_sparsity()
             F_list_e.append(F)
             cost_list_e.append(cost)
             l1_list_e.append(l1)
@@ -103,9 +104,9 @@ def train(model:nn.Module,
             scheduler.step()
 
             if not model.is_base_model:
-                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1.item(), "accuracy: ": a})
+                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1.item(), "accuracy: ": a, "sparsity: ": forward_sparsity})
             else:
-                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1, "accuracy: ": a})
+                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1, "accuracy: ": a, "sparsity: ": forward_sparsity})
 
         average_F = sum(F_list_e) / len(F_list_e)
         average_cost = sum(cost_list_e) / len(cost_list_e)
@@ -122,4 +123,4 @@ def train(model:nn.Module,
             torch.save(model.state_dict(), "checkpoint.pt")
 
         pbar.set_postfix({"energy: ": average_F, "cost: ": average_cost, "l1: ": average_l1, "accuracy: ": average_accuracy})
-    return model
+    return

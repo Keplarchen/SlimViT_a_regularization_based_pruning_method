@@ -8,7 +8,7 @@ data:
 
 models:
   fine_tune: True
-  init_scale: 1.0
+  init_scale: 0.0
   init_scale_threshold: 0.01
   init_sparsity_threshold: 0.9
   granularity: embedding

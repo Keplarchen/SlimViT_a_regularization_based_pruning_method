@@ -22,6 +22,7 @@ class PatchScaler(nn.Module):
         super().__init__()
         self.granularity = granularity
         self.is_base_model = is_base_model
+        self.sparsity = 0.0
         if not self.is_base_model:
             if granularity == "patch":
                 self.scaler = nn.Parameter(torch.full((patch_size,), init_scale))
@@ -69,6 +70,12 @@ class PatchScaler(nn.Module):
             # TODO: patch padding
 
             x = torch.cat((cls, sparsity_gated_patch), dim=1)
+            self.get_sparsity(x)
+
             return x
         else:
             return x
+
+    def get_sparsity(self, logit: torch.Tensor) -> None:
+        self.sparsity = (logit.abs() < 1e-4).float().mean()
+        return

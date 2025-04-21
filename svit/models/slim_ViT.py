@@ -23,6 +23,7 @@ class SlimViT(nn.Module):
         """
         super().__init__()
         self.is_base_model = is_base_model
+        self.sparsity = []
         self.vit = vit_b_16(weights=ViT_B_16_Weights.DEFAULT if config_var["models"]["fine_tune"] else None)
         self.head = nn.Linear(in_features=self.vit.encoder.pos_embedding.shape[-1],
                               out_features=head_num[config_var["data"]["train_dataset"]])
@@ -54,6 +55,7 @@ class SlimViT(nn.Module):
             if i !=  len(self.vit.encoder.layers) - 1:
                 x = layer(x)
                 x = self.scaler[i](x)
+                self.sparsity.append(self.scaler[i].sparsity.item())
             else:
                 x = layer(x)
         self.vit.encoder.ln(x)
@@ -62,3 +64,6 @@ class SlimViT(nn.Module):
         x = self.head(x)
 
         return x
+
+    def get_sparsity(self) -> float:
+        return sum(self.sparsity) / len(self.sparsity)
