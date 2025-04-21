@@ -7,9 +7,6 @@
     <list default="true" id="93eb0302-6a1e-4e41-acd4-fe55fb8440cd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/svit/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/svit/config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/models/patch_scaler.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/patch_scaler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/models/slim_ViT.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/models/slim_ViT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svit/training/training_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/svit/training/training_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +100,8 @@
       <workItem from="1744902834213" duration="17441000" />
       <workItem from="1745073189765" duration="8904000" />
       <workItem from="1745091359079" duration="11151000" />
-      <workItem from="1745253114942" duration="5149000" />
+      <workItem from="1745253114942" duration="5259000" />
+      <workItem from="1745263725958" duration="175000" />
     </task>
     <servers />
   </component>
