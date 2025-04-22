@@ -76,6 +76,7 @@ class PatchScaler(nn.Module):
         else:
             return x
 
-    def get_sparsity(self, logit: torch.Tensor) -> None:
-        self.sparsity = (logit.abs() < 1e-4).float().mean()
+def get_sparsity(self, logit: torch.Tensor) -> None:
+    self.sparsity = ((logit.abs() < 1e-4).float().mean()).detach()
+
         return
