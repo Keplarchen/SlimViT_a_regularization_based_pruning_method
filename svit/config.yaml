@@ -8,7 +8,7 @@ data:
 
 models:
   fine_tune: True
-  init_scale: 0.1
+  init_scale: 1.0
   init_scale_threshold: 0.01
   init_sparsity_threshold: 0.9
   granularity: embedding
@@ -21,7 +21,10 @@ training:
   T_max: 180000
 
 energy:
-  accuracy_tradeoff: False
   lambda_l1: 0.000001
+  sparsity_tradeoff: True
+  lambda_sparsity: -0.7
+  target_sparsity: 0.2
+  accuracy_tradeoff: False
   lambda_accuracy: -0.7
   target_accuracy: 0.9

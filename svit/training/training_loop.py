@@ -90,9 +90,8 @@ def train(model:nn.Module,
 
             output = model(x)
 
-            F, cost, l1, a = energy_function(model, output, y, val_dataloader, criterion)
+            F, cost, l1, a, s = energy_function(model, output, y, val_dataloader, criterion)
 
-            forward_sparsity = model.get_sparsity()
             F_list_e.append(F)
             cost_list_e.append(cost)
             l1_list_e.append(l1)
@@ -104,9 +103,9 @@ def train(model:nn.Module,
             scheduler.step()
 
             if not model.is_base_model:
-                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1.item(), "accuracy: ": a, "sparsity: ": forward_sparsity})
+                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1.item(), "accuracy: ": a, "sparsity: ": s})
             else:
-                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1, "accuracy: ": a, "sparsity: ": forward_sparsity})
+                inner_pbar.set_postfix({"energy: ": F.item(), "cost: ": cost.item(), "l1: ": l1, "accuracy: ": a, "sparsity: ": s})
 
         average_F = sum(F_list_e) / len(F_list_e)
         average_cost = sum(cost_list_e) / len(cost_list_e)

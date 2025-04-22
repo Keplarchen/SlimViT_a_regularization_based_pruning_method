@@ -62,8 +62,8 @@ class PatchScaler(nn.Module):
 
             with torch.no_grad():
                 patch_sparsity = (scale_gated_patch.abs() < 1e-4).float().mean(dim=-1, keepdim=True)
-                sparsity_hard_mask = patch_sparsity < self.sparsity_threshold
-            sparsity_soft_mask = torch.sigmoid(temperature * (self.sparsity_threshold - patch_sparsity))
+                sparsity_hard_mask = patch_sparsity > self.sparsity_threshold
+            sparsity_soft_mask = torch.sigmoid(temperature * (patch_sparsity - self.sparsity_threshold))
             sparsity_gate = sparsity_hard_mask + sparsity_soft_mask - sparsity_soft_mask.detach()
             sparsity_gated_patch = scale_gated_patch * sparsity_gate
 

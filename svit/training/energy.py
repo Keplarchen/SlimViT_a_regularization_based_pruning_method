@@ -12,9 +12,12 @@ def energy_function(model: nn.Module,
                     val_dataloader: DataLoader,
                     criterion: nn.Module,
                     lambda_l1: float=config["energy"]["lambda_l1"],
+                    target_sparsity: float=config["energy"]["target_sparsity"],
+                    lambda_sparsity: float=config["energy"]["lambda_sparsity"],
+                    sparsity_tradeoff: bool=config["energy"]["sparsity_tradeoff"],
                     target_accuracy: float=config["energy"]["target_accuracy"],
                     lambda_accuracy: float=config["energy"]["lambda_accuracy"],
-                    accuracy_tradeoff: bool=config["energy"]["accuracy_tradeoff"]) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, float]:
+                    accuracy_tradeoff: bool=config["energy"]["accuracy_tradeoff"]):
     """
 
     :param model:
@@ -23,9 +26,11 @@ def energy_function(model: nn.Module,
     :param val_dataloader:
     :param criterion:
     :param lambda_l1:
+    :param target_sparsity:
+    :param lambda_sparsity:
+    :param sparsity_tradeoff:
     :param target_accuracy:
     :param lambda_accuracy:
-    :param multi_prune:
     :param accuracy_tradeoff:
     :return:
     """
@@ -46,11 +51,17 @@ def energy_function(model: nn.Module,
             total_correct += (preds == y_val).sum().item()
             total_samples += y_val.size(0)
     model.train()
+
+    sparsity = model.get_sparsity()
+
     accuracy = total_correct / total_samples
     accuracy_penalty = 0.0
+    sparsity_penalty = 0.0
     if not model.is_base_model:
+        if sparsity_tradeoff and sparsity < target_sparsity:
+            sparsity_penalty = (sparsity / target_sparsity) ** lambda_sparsity
         if accuracy_tradeoff and accuracy < target_accuracy:
             accuracy_penalty = (accuracy / target_accuracy) ** lambda_accuracy
 
-    F = cost + scaler_l1 + accuracy_penalty
-    return F, cost, scaler_l1, accuracy
+    F = cost + scaler_l1 + accuracy_penalty + sparsity_penalty
+    return F, cost, scaler_l1, accuracy, sparsity
