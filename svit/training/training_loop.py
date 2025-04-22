@@ -10,6 +10,8 @@ from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from tqdm.notebook import tqdm
 
+from layer_evaluation import evaluate_and_log, plot_layer_distribution
+
 def get_criterion() -> nn.Module:
     """
 
@@ -80,6 +82,9 @@ def train(model:nn.Module,
         accuracy_list_e = []
 
         inner_pbar = tqdm(train_dataloader, leave=False)
+
+        evaluate_and_log(model, val_dataloader, device=device, save_csv=True, epoch=epoch)
+        plot_layer_distribution(model, val_dataloader, device=device, epoch=epoch)
         for data in inner_pbar:
             gc.collect()
             if device == "cuda":
